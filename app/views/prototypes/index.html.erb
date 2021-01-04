@@ -1,0 +1,22 @@
+<main class="main">
+  <div class="inner">
+    <%# ログインしているときは以下を表示する %>
+    <%# user_signed_in? はユーザーがサインインしているか検証するメソッド %>
+    <% if user_signed_in? %>
+      <div class="greeting">
+        こんにちは、
+        <%# users_show_pathへの遷移は間違い、users_showだとidが紐付いていない,indexページはcurrent_userの名前が表示されているから、idはcurrent_user.id %>
+        <%= link_to "#{current_user.name}さん", user_path(current_user.id), method: :get, class: :greeting__link %>
+      </div>
+      <% end %>
+    <%# // ログインしているときは上記を表示する %>
+    <div class="card__wrapper">
+      <%# 投稿機能実装後、部分テンプレートでプロトタイプ投稿一覧を表示する %>
+      <%# render partial: '呼び出したいファイル _〇〇.html.erbの〇〇を記述',  %>
+      <%# <%= render partial: 'prototype', locals: { @prototypes: @prototypes } %>
+      <%= render partial: 'prototype', collection: @prototypes %>
+      <%# collectionは,controllerで指定したインスタンス変数をいれる、これで遷移先の部分テンプレートで同じインスタンス変数が使える %>
+      <%# 上記は、prototypes_controllerのdef indexの@prototypesを入れている %>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,22 @@
+<div class="card">
+<%# if文を用いて、カラムの情報があるかの確認ができる %>
+<%# <%if @prototypes[0] != nil %>
+
+<%# each文とrenderのcollectionオプションを使うと、登録件数の数だけ繰り返し処理が行われるので、登録件数✕ループ数の表示になる %>
+<%# <% @prototypes.each do |prototype| %>
+      <%# コードを書き直したら解決するという事があります %>
+      <%# <%= link_to image_tag (prototype.image, class: :card__img), root_path %>
+  <%# variant(resize: '縦x横')で画像サイズを調整 ※画像データの基本サイズ(形状)は変更は出来ない→縦長なのか？横長なのか？の事 %>
+  <%# 再度下記のコードで画像が表示されなくなる→DBを直接編集してしまったのが原因→downからupをしたら解決 %>
+  <%= link_to image_tag(prototype.image.variant(resize: '500x250'), class: :card__img), prototype_path(prototype.id), method: :get %>
+    <div class="card__body">
+      <%= link_to prototype.title, prototype_path(prototype.id), method: :get, class: :card__title %>
+      <p class="card__summary">
+        <%= prototype.catch_copy %>
+      </p>
+      <%# prototypeテーブルにはnameカラムはない。userテーブルのnameを使うから、user.name %>
+      <%= link_to "by #{prototype.user.name}", user_path(prototype.user.id), method: :get, class: :card__user %>
+    </div>
+<%# <% end %>
+<%# <% end %>
+</div>

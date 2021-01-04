@@ -1,0 +1,76 @@
+<main class="main">
+  <div class="inner">
+    <div class="prototype__wrapper">
+      <p class="prototype__hedding">
+      <%# show.html.erbではeach文で@prototypeをブロック引数|prototype|にで呼び出していないから、下記はprototypes_controler内のdef showで宣言した@prototype %>
+        <%= @prototype.title %>
+      </p>
+
+      <%# 遷移先のページはどのモデルのidと紐付いているのかを記述すること〇〇_path(紐付けるid) %>
+      <%# 遷移先のPrefixを正確に記述 method: :HTTPメソッド名 ※HTTPメソッドはそのページで行いたい処理の内容 %>
+      <%= link_to "by #{@prototype.user.name}", user_path(@prototype.user.id), meshod: :get, class: :prototype__user %>
+      <%# プロトタイプの投稿者とログインしているユーザーが同じであれば以下を表示する %>
+      <%# if user_signed_in でもしログインしていたらのコード && で条件を追加 %>
+      <% if user_signed_in? && current_user.id == @prototype.user_id %>
+        <div class="prototype__manage">
+          <%# edit_prototype_path, method: :getでコントローラーで設定したeditの機能をもつページに遷移 %>
+          <%# pathにcurrent_user or id を指定する、指定がないとどのuserの編集ページかが認識できない %>
+          <%= link_to "編集する", edit_prototype_path(@prototype.id), method: :get, class: :prototype__btn %>
+          <%# 削除ページに遷移を記述追加 %>
+          <%= link_to "削除する", prototype_path(@prototype.id), method: :delete, class: :prototype__btn %>
+        </div>
+      <% end %>
+      <%# // プロトタイプの投稿者とログインしているユーザーが同じであれば上記を表示する %>
+      <div class="prototype__image">
+        <%= image_tag @prototype.image %>
+      </div>
+      <div class="prototype__body">
+        <div class="prototype__detail">
+          <p class="detail__title">キャッチコピー</p>
+          <p class="detail__message">
+            <%= @prototype.catch_copy %>
+          </p>
+        </div>
+        <div class="prototype__detail">
+          <p class="detail__title">コンセプト</p>
+          <p class="detail__message">
+            <%= @prototype.concept %>
+          </p>
+        </div>
+      </div>
+
+      <div class="prototype__comments">
+        <%# ログインしているユーザーには以下のコメント投稿フォームを表示する %>
+        <%# もしログインしていれば表示する、のコードはendで閉じること！ %>
+        <% if user_signed_in? %>
+          <%# ２つのcontrollerの機能とモデルの情報が必要 だからmodel: に@prototypeと@commentが入る %>
+          <%= form_with(model: [@prototype, @comment], local: true) do |f| %>
+            <div class="field">
+              <%= f.label :text, "コメント" %><br />
+              <%= f.text_field :text %>
+            </div>
+            <div class="actions">
+              <%= f.submit "送信する", class: :form__btn  %>
+            </div>
+          <% end %>
+        <% end %>
+        <%# // ログインしているユーザーには上記を表示する %>
+        
+        <ul class="comments_lists">
+          <%# 投稿に紐づくコメントを一覧する処理を記述する %>
+          <%# prototypeとcommentはアソシエーションを結んでいるので@prototype.commentsの記述が可能 %>
+          <%# each文を使う事により一人のユーザーのコメントが全て取得している %>
+          <% @prototype.comments.each do |comment| %>
+            <li class="comments_list">
+              <%= comment.text %>
+              <%# <% binding.pry %>
+              <%# prototype.user.idではがでる NameError in Prototypes#showが出る 上記のeach文でprototype_controllerのdef showで定義した@prototypeをcommentに置き換えているから %>
+              <%= link_to "（ #{comment.user.name} )", user_path(comment.user.id), method: :get, class: :comment_user %>
+            </li>
+          <% end %>
+          <%# // 投稿に紐づくコメントを一覧する処理を記述する %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>

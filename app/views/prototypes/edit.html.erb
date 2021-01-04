@@ -1,0 +1,13 @@
+<div class="main">
+  <div class="inner">
+    <div class="form__wrapper">
+      <h2 class="page-heading">プロトタイプ編集</h2>
+      <%# 部分テンプレートでフォームを表示する %>
+      <%= render partial: 'form', locals: { prototype: @prototype } %>
+      <%# prototypes_controllerのdef editないで宣言した インスタンス変数@prototypeを反映している %>
+      <%# partial: '遷移先の部分テンプレート名(_〇〇) %>
+      <%# locals: { 遷移先の部分テンプレートで使う変数名: コントローラーで宣言したインスタンス変数名 ｝%>
+      <%# なぜインスタンス変数を別の名前に置き換えてなければいけないのかは、現在不明 %>
+    </div>
+  </div>
+</div>
