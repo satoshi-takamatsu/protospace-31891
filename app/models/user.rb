@@ -18,5 +18,4 @@ class User < ApplicationRecord
   has_many :prototypes
   # dependent: :destroyはuserを削除したらコメントも削除というコード
   has_many :comments
-  has_many_attached :images
 end
