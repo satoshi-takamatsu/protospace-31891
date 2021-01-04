@@ -1,7 +1,8 @@
 class Prototype < ApplicationRecord
   # belongs_toを指定することにより、user_idが必要というバリデーションは不必要になる
   belongs_to :user #userテーブルとのアソシエーション
-  has_one_attached :image
+  # has_one_attached :image
+  has_many_attached :images
   has_many :comments, dependent: :destroy #commnetテーブルとのアソシエーション
   # dependent::destroyはprototypeを削除するとidで紐付いているcommentも削除されるというコード
 
